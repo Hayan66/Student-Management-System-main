@@ -3,6 +3,7 @@ package com.burak.studentmanagement.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,13 +11,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="teacher")
-public class Teacher {
+@Table(name="student")
+public class Student {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -37,19 +41,26 @@ public class Teacher {
 	@Column(name="email")
 	private String email;
 	
+	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="role_id")
 	private Role role;
+		
 	
-	@OneToMany(mappedBy="teacher", fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name="student_course_details",
+				joinColumns = @JoinColumn(name="student_id"),
+				inverseJoinColumns = @JoinColumn(name="course_id"))			
 	private List<Course> courses;
 	
-	public Teacher() {
+	public Student() {
 		
 	}
 
-	public Teacher(int id, String userName, String password, String firstName, String lastName, String email, Role role,
-			List<Course> courses) {
+	
+	
+	public Student(int id, String userName, String password, String firstName, String lastName, String email,
+			 Role role, List<Course> courses) {
 		this.id = id;
 		this.userName = userName;
 		this.password = password;
@@ -58,6 +69,15 @@ public class Teacher {
 		this.email = email;
 		this.role = role;
 		this.courses = courses;
+	}
+
+
+
+	public void addCourse(Course course) {
+		if(courses == null) {
+			courses = new ArrayList<>();
+		}
+		courses.add(course);
 	}
 
 	public int getId() {
@@ -107,6 +127,7 @@ public class Teacher {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+		
 
 	public Role getRole() {
 		return role;
@@ -124,12 +145,28 @@ public class Teacher {
 		this.courses = courses;
 	}
 	
-	public void addCourse(Course course) {
-		if(courses == null) {
-			courses = new ArrayList<>();
-		}
-		
-		courses.add(course);
+	public void removeCourse(Course course) {
+		courses.remove(course);
 	}
+	
+	public boolean equals(Object comparedObject) {
+	    if (this == comparedObject) {
+	        return true;
+	    }
+
+	   if (!(comparedObject instanceof Student)) {
+	        return false;
+	    }
+
+	    Student comparedStudent = (Student) comparedObject;
+
+	    if (this.id == comparedStudent.id) {
+	        return true;
+	    }
+
+	    return false;
+	}
+	
+	
 	
 }
