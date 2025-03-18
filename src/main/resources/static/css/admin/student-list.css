@@ -1,35 +1,36 @@
 h3 {
 	font-size: 24px;
-	text-align: center;
+    text-align: center;
 }
 
 table {
 	width: 90%;
 }
 
-.short-col {
-	width: 100px;
+
+.short-cell {
+	width: 60px;
+}
+
+.action-col {
+	width: 130px;
 }
 
 td i {
 	display: none !important;	
 }
 
-#alert {
-	margin-top: 20px;
-	color: #ff1616;
-}
 
 @media screen and (max-width: 900px) {
-  .short-col {
-  	width: 55px;
+  .action-col {
+  	width: 80px;
   }
   
   td i {
   	display: inline-block !important;
   }
  
-  td a span {
+  td span {
  	display: none !important;
   }
  
@@ -39,10 +40,9 @@ td i {
   }
 }
 
+
 @media screen and (min-width: 1420px) {
-	table {
-		width: 80%;
-	}  
+  table {
+  	width: 80%;
+  }
 }
-
-
