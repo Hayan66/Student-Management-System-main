@@ -1,4 +1,7 @@
-#Hayan Tech 
+##Hayan Tech
+
+##Developers
+---Pavithra Musunuri
 
 # Student-Management-System
 Student Management System is a web application which can be used for managing the data of a school related to students, teachers, and courses.
