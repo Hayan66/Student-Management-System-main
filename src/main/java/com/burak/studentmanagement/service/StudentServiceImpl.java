@@ -1,5 +1,7 @@
 package com.burak.studentmanagement.service;
 
+
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -15,65 +17,58 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.burak.studentmanagement.dao.RoleDao;
-import com.burak.studentmanagement.dao.TeacherDao;
+import com.burak.studentmanagement.dao.StudentDao;
 import com.burak.studentmanagement.entity.Role;
-import com.burak.studentmanagement.entity.Teacher;
+import com.burak.studentmanagement.entity.Student;
 import com.burak.studentmanagement.user.UserDto;
 
 @Service
-public class TeacherServiceImpl implements TeacherService {
+public class StudentServiceImpl implements StudentService {
 	
 	@Autowired
-	private TeacherDao teacherDao;
+	private StudentDao studentDao;
 	
 	@Autowired 
 	private RoleDao roleDao;
 	
+
+	@Override
+	@Transactional
+	public Student findByStudentName(String studentName) {
+		return studentDao.findByStudentName(studentName);
+	}
 	
 	@Override
 	@Transactional
-	public Teacher findByTeacherName(String teacherName) {
-		return teacherDao.findByTeacherName(teacherName);
+	public Student findByStudentId(int id) {
+		return studentDao.findByStudentId(id);
 	}
 
 	@Override
 	@Transactional
 	public void save(UserDto userDto) {
-		Teacher teacher = new Teacher();
-		teacher.setUserName(userDto.getUserName());
-		teacher.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
-		teacher.setFirstName(userDto.getFirstName());
-		teacher.setLastName(userDto.getLastName());
-		teacher.setEmail(userDto.getEmail());		
-		teacher.setRole(userDto.getRole());	
+		Student student = new Student();
+		student.setUserName(userDto.getUserName());
+		student.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
+		student.setFirstName(userDto.getFirstName());
+		student.setLastName(userDto.getLastName());
+		student.setEmail(userDto.getEmail());		
+		student.setRole(userDto.getRole());	
 		
-		teacherDao.save(teacher);
-	}
-	
-	@Override
-	@Transactional
-	public void save(Teacher teacher) {
-		teacherDao.save(teacher);	
-	}
-	
-	
-	@Override
-	@Transactional
-	public List<Teacher> findAllTeachers() {
-		return teacherDao.findAllTeachers();
+		studentDao.save(student);
 	}
 	
 	
 	@Override
 	@Transactional
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Teacher teacher = teacherDao.findByTeacherName(username);
-		if (teacher == null) {
+		Student student = studentDao.findByStudentName(username);
+		if (student == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
 		Collection<Role> role = new ArrayList<>();
-		role.add(teacher.getRole());
-		return new org.springframework.security.core.userdetails.User(teacher.getUserName(), teacher.getPassword(),
+		role.add(student.getRole());
+		return new org.springframework.security.core.userdetails.User(student.getUserName(), student.getPassword(),
 				mapRolesToAuthorities(role));
 	}
 	
@@ -83,18 +78,21 @@ public class TeacherServiceImpl implements TeacherService {
 
 	@Override
 	@Transactional
-	public Teacher findByTeacherId(int id) {
-		return teacherDao.findByTeacherId(id);
+	public List<Student> findAllStudents() {
+		return studentDao.findAllStudents();
 	}
 
 	@Override
 	@Transactional
-	public void deleteTeacherById(int id) {
-		teacherDao.deleteTeacherById(id);	
+	public void save(Student student) {
+		studentDao.save(student);
+		
 	}
 
-	
-
-	
+	@Override
+	@Transactional
+	public void deleteById(int id) {
+		studentDao.deleteById(id);
+	}
 
 }
