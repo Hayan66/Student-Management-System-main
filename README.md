@@ -17,6 +17,7 @@ The application has 3 user roles: student, teacher, and admin. Each role has acc
 <img src="https://user-images.githubusercontent.com/93772280/160869303-dc4db60e-df04-49bf-845d-cf34f3325b3f.PNG" width="700">
 
 ###SQL schems
+
 CREATE TABLE role (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL
